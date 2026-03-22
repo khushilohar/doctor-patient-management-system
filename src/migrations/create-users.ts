@@ -29,6 +29,11 @@ export = {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
+      userType: {
+        type: DataTypes.ENUM("superadmin", "admin", "user"),
+        allowNull: false,
+        defaultValue: "user",
+      },
       is_verified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
