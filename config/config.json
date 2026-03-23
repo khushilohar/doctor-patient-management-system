@@ -2,21 +2,21 @@
   "development": {
     "username": "root",
     "password": "2004",
-    "database": "flip_health_db",
+    "database": "doctor_patient",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": "2004",
+    "database": "doctor_patient_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
+    "password": "2001",
+    "database": "doctor_patient_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

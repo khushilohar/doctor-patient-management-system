@@ -1,19 +1,27 @@
-
 import { Sequelize } from 'sequelize';
-import * as config from '../../config/config.json'; // Adjust path as needed
+import dotenv from 'dotenv';
 
-const env = process.env.NODE_ENV || 'development';
-const dbConfig = (config as any)[env];
+dotenv.config();
 
 const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
+  process.env.DB_NAME as string,
+  process.env.DB_USER as string,
+  process.env.DB_PASSWORD as string,
   {
-    host: dbConfig.host,
-    dialect: dbConfig.dialect,
-    logging: dbConfig.logging || false,
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT) || 3306,
+    dialect: 'mysql',
+    logging: false,
   }
 );
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('MySQL connected successfully');
+  })
+  .catch((err) => {
+    console.error('Database connection error:', err);
+  });
 
 export default sequelize;

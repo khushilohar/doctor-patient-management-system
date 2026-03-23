@@ -1,31 +1,36 @@
-import { Router } from "express";
+import { Router } from 'express';
 import {
   signUp,
-  verifyOtp,
-  resendOtp,
+  verifyOTP,
+  resendOTP,
   signIn,
   forgotPassword,
   resetPassword,
   changePassword,
   signOut,
-} from "../controllers/auth_controller";
-
-import { userAction } from "../middleware/middleware";
+  me,
+} from '../controllers/auth_controller';
+import { authMiddleware } from '../middleware/middleware';
+import { rateLimitMiddleware } from '../middleware/middleware'; // optional
 
 const router = Router();
 
-// ==========================
-// 🔐 AUTH ROUTES
-// ==========================
-router.post("/signup", signUp);
-router.post("/verify-otp", verifyOtp);
-router.post("/resend-otp", resendOtp);
+// Public routes
+router.post('/signup', signUp);
+router.post('/verify-otp', verifyOTP);
+router.post('/resend-otp', resendOTP);
+router.post('/signin', signIn);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
-router.post("/signin", signIn);
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+// Protected routes (require authentication)
+router.post('/change-password', authMiddleware, changePassword);
+router.post('/signout', authMiddleware, signOut);
+router.get('/me', authMiddleware, me);
 
-router.post("/change-password", userAction, changePassword);
-router.post("/signout", userAction, signOut);
+// Optional: Apply rate limiting to sensitive endpoints
+router.post('/signin', rateLimitMiddleware(60, 5), signIn);
+router.post('/forgot-password', rateLimitMiddleware(60, 3), forgotPassword);
+router.post('/reset-password', rateLimitMiddleware(60, 3), resetPassword);
 
 export default router;

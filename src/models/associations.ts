@@ -26,3 +26,14 @@ Action.belongsToMany(Resource, {
   through: ResourceAction,
   foreignKey: "action_id",
 });
+
+ResourceAction.belongsTo(Resource, { foreignKey: 'resource_id' });
+ResourceAction.belongsTo(Action, { foreignKey: 'action_id' });
+
+PermissionRole.belongsTo(Role, { foreignKey: 'role_id' });
+PermissionRole.belongsTo(ResourceAction, { foreignKey: 'resource_action_id' });
+
+// Optionally, if you need direct access from UserRole to User/Role
+UserRole.belongsTo(User, { foreignKey: 'user_id' });
+UserRole.belongsTo(Role, { foreignKey: 'role_id' });
+// const permissionRole = await PermissionRole.findByPk(1, { include: [Role, ResourceAction] });
